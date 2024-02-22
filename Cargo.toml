@@ -1,0 +1,12 @@
+[package]
+name = "rinha_de_backend"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+actix-web = "4.5.1"
+chrono = { version = "0.4.34", features = ["serde"] }
+sqlx = { version = "0.7.3", features = ["postgres", "runtime-tokio", "chrono"] }
