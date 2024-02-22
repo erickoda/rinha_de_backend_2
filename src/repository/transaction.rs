@@ -37,7 +37,13 @@ impl TransactionRepository {
 
         let result: Result<ClientLimitAndBalance, sqlx::Error> = sqlx::query_as(
             "
+            WITH selected_client as (
+                SELECT currency_limit FROM client WHERE id = $1
+            ), transactions_value as (
+                SELECT SUM(value) as balance FROM transaction WHERE client_id = $1
+            )
             
+            SELECT -(COALESCE(balance, 0) + $2) as balance, currency_limit as limit FROM selected_client, transactions_value
             "
         )
         .bind(client_id)
@@ -45,6 +51,17 @@ impl TransactionRepository {
         .fetch_one(&pool)
         .await;
 
-        true
+        match result {
+            Ok(transaction) => {
+                println!("limit: {}, balance: {}", transaction.limit, transaction.balance * -1);
+                if (transaction.limit as i64) < (transaction.balance * -1) {
+                    return false
+                }
+                return true
+            }
+            Err(_) => {
+                return false
+            }
+        }
     }
 }
