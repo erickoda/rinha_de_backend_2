@@ -2,6 +2,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, sqlx::Type, Debug, Clone)]
+#[serde(rename_all = "snake_case")]
 pub enum TransactionRoles {
     C,
     D
