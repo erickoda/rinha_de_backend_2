@@ -20,14 +20,14 @@ impl TransactionRoles {
 #[derive(Serialize, Deserialize, sqlx::FromRow)]
 pub struct Transaction {
     #[serde(rename = "valor")]
-    value: i32,
+    pub value: i32,
     #[serde(rename = "tipo")]
-    role: TransactionRoles,
+    pub role: String,
     #[serde(rename = "descricao")]
-    description: String,
+    pub description: String,
     #[serde(rename = "realizada_em")]
-    realized_at: DateTime<Utc>,
-    client_id: i32
+    pub realized_at: DateTime<Utc>,
+    // client_id: i32
 }
 
 #[derive(Serialize, Deserialize, sqlx::FromRow, Debug, Clone)]

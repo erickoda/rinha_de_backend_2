@@ -4,7 +4,7 @@ CREATE TABLE if not EXISTS transaction (
     role varchar(255) NOT NULL,
     description varchar(255) NOT NULL,
     value int NOT NULL,
-    realized_at timestamp NOT NULL
+    realized_at timestamp with time zone NOT NULL
 );
 
 CREATE INDEX client_id ON transaction (client_id);
