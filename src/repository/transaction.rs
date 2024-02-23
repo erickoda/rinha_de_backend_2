@@ -12,12 +12,12 @@ impl TransactionRepository {
             WITH inserted_transaction AS (INSERT INTO
                 transaction (value, role, description, realized_at, client_id)
                 VALUES ($1, $2, $3, NOW(), $4)
-                RETURNING (id, value, role, description, realized_at, client_id)
+                RETURNING id, value, role, description, realized_at, client_id
             ), updated_client AS (
                 UPDATE client
                 SET transactions = array_append(transactions, (SELECT id FROM inserted_transaction))
                 WHERE id = $4
-                RETURNING (currency_limit)
+                RETURNING currency_limit
             ), client_transactions AS (
                 SELECT SUM(value) as balance FROM transaction
                 WHERE client_id = $4
