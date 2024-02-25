@@ -13,7 +13,7 @@ impl ClientController {
         match ClientRepository::find(repository.pool.clone(), id).await {
             Ok(clients) => {
 
-                if clients.len() == 0 {
+                if clients.is_empty() {
                     return Ok(HttpResponse::NotFound().json("Cliente Não Encontrado"))
                 }
 
@@ -23,10 +23,10 @@ impl ClientController {
                 for client in &clients {
                     if client.value.is_some() && client.role.is_some() && client.description.is_some() && client.realized_at.is_some()  {
                         transactions.push(Transaction {
-                            value: client.value.clone().unwrap(),
+                            value: client.value.unwrap(),
                             role: client.role.clone().unwrap(),
                             description: client.description.clone().unwrap(),
-                            realized_at: client.realized_at.clone().unwrap()
+                            realized_at: client.realized_at.unwrap()
                         })
                     } else {
                         transactions = vec![];
@@ -42,7 +42,7 @@ impl ClientController {
                     last_transactions: transactions
                 };
 
-                return Ok(HttpResponse::Ok().json(response))
+                Ok(HttpResponse::Ok().json(response))
             },
             Err(err) => Ok(HttpResponse::InternalServerError().json(err.to_string()))
         }

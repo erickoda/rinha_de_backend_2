@@ -9,7 +9,8 @@ impl TransactionRepository {
     pub async fn create(pool: PgPool, new_transaction: Json<NewTransaction>, client_id: i32) -> Result<Option<ClientLimitAndBalance>, sqlx::Error> {
         sqlx::query_as(
             "
-            WITH inserted_transaction AS (INSERT INTO
+            WITH inserted_transaction AS (
+                INSERT INTO
                 transaction (value, role, description, realized_at, client_id)
                 VALUES ($1, $2, $3, NOW(), $4)
                 RETURNING id, value, role, description, realized_at, client_id
@@ -53,14 +54,14 @@ impl TransactionRepository {
 
         match result {
             Ok(transaction) => {
-                println!("limit: {}, balance: {}", transaction.limit, transaction.balance * -1);
-                if (transaction.limit as i64) < (transaction.balance * -1) {
+                println!("limit: {}, balance: {}", transaction.limit, -transaction.balance);
+                if (transaction.limit as i64) < (-transaction.balance) {
                     return false
                 }
-                return true
+                true
             }
             Err(_) => {
-                return false
+                false
             }
         }
     }
