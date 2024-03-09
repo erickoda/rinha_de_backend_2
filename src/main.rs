@@ -42,7 +42,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(repo.clone()))
             .configure(services_config)
     })
-    .bind(("127.0.0.1", port))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }

@@ -5,7 +5,7 @@ use crate::controllers::{client::ClientController, transaction::TransactionContr
 pub fn services_config(service_config: &mut ServiceConfig) {
     service_config
         .service(scope("/clientes/{id}")
-            .service(resource("/extratos").route(get().to(ClientController::find)))
+            .service(resource("/extrato").route(get().to(ClientController::find)))
             .service(resource("/transacoes").route(post().to(TransactionController::create)))
         );
 }

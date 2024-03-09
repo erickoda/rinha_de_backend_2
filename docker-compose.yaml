@@ -5,10 +5,10 @@ services:
     build: .
     hostname: api01
     environment:
-      - PORT=8080
+      - PORT=80
       - DATABASE_URL=postgresql://example:example@db/example
     expose:
-      - "8080:8080"
+      - "80"
     depends_on:
       - db
     deploy:
