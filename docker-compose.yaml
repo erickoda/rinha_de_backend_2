@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   api01: &api
-    build: .
+    image: erickoda/rinha_de_backend
     hostname: api01
     environment:
       - PORT=80
